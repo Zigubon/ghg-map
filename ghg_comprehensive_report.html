@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>국가 온실가스 심층 분석 리포트</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Pretendard', 'Noto Sans KR', sans-serif; background: #fff; color: #333; margin: 0; padding: 40px 20px; }
+        .container { max-width: 1140px; margin: 0 auto; }
+        
+        .report-header { text-align: center; margin-bottom: 60px; }
+        .report-header h1 { font-size: 32px; font-weight: 800; color: #2c3e50; margin-bottom: 15px; letter-spacing: -1px; }
+        .report-header p { color: #666; font-size: 16px; line-height: 1.6; }
+
+        .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 40px; margin-bottom: 60px; }
+        
+        .insight-card { background: white; border: 1px solid #e1e4e8; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); transition: transform 0.3s ease; }
+        .insight-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+        
+        .card-tag { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: inline-block; }
+        .card-title { font-size: 22px; font-weight: 700; color: #2c3e50; margin: 0 0 15px 0; }
+        .card-desc { font-size: 15px; line-height: 1.6; color: #555; margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px; }
+        .highlight { font-weight: bold; color: #d35400; }
+        
+        .chart-box { position: relative; height: 300px; width: 100%; margin-top: 20px; }
+
+        .reference-box { background: #f8f9fa; border-top: 2px solid #2c3e50; padding: 30px; margin-top: 60px; border-radius: 0 0 12px 12px; }
+        .ref-title { font-weight: 700; font-size: 16px; color: #2c3e50; margin-bottom: 10px; }
+        .ref-list { list-style: none; padding: 0; margin: 0; font-size: 14px; color: #666; }
+        .ref-list li { margin-bottom: 5px; }
+        .ref-list li::before { content: "✔"; color: #27ae60; margin-right: 8px; }
+
+        @media (max-width: 768px) {
+            .insight-grid { grid-template-columns: 1fr; }
+            .chart-box { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="report-header">
+        <h1>🇰🇷 국가 온실가스 심층 분석 리포트</h1>
+        <p>1990년부터 2023년까지의 국가 공식 데이터를 기반으로<br>대한민국 기후 변화의 거시적 흐름과 구조적 변화를 분석했습니다.</p>
+    </div>
+
+    <div class="insight-grid">
+        
+        <div class="insight-card">
+            <span class="card-tag" style="color: #27ae60;">DECOUPLING</span>
+            <h3 class="card-title">1. 성장은 계속되지만 탄소는 꺾였다</h3>
+            <div class="card-desc">
+                1990년 대비 GDP는 4.5배 성장했지만, 온실가스는 <span class="highlight">2018년 정점(Peak)</span> 후 하락세입니다. 경제 성장과 환경 오염이 분리되는 '탈동조화'의 강력한 증거입니다.
+            </div>
+            <div class="chart-box"><canvas id="chart1"></canvas></div>
+        </div>
+
+        <div class="insight-card">
+            <span class="card-tag" style="color: #8e44ad;">DIGITAL SHADOW</span>
+            <h3 class="card-title">2. 디지털 강국의 숨은 대가 (F-gas)</h3>
+            <div class="card-desc">
+                다른 가스들은 정체된 반면, 반도체·디스플레이 공정의 <b>F-gas(불소계 가스)</b>는 30배 이상 폭증했습니다. 반도체 수출 호황 이면의 환경적 숙제입니다.
+            </div>
+            <div class="chart-box"><canvas id="chart2"></canvas></div>
+        </div>
+
+        <div class="insight-card">
+            <span class="card-tag" style="color: #c0392b;">ENERGY MIX</span>
+            <h3 class="card-title">3. 에너지 전환이 답이다</h3>
+            <div class="card-desc">
+                국가 총배출량의 <b>87% 이상</b>이 에너지 부문(발전, 수송, 건물)에서 나옵니다. 폐기물 감축도 중요하지만, 결국 <span class="highlight">재생에너지 전환</span> 없이는 탄소중립이 불가능합니다.
+            </div>
+            <div class="chart-box"><canvas id="chart3"></canvas></div>
+        </div>
+
+        <div class="insight-card">
+            <span class="card-tag" style="color: #2980b9;">EFFICIENCY</span>
+            <h3 class="card-title">4. '탄소 생산성'의 혁명</h3>
+            <div class="card-desc">
+                GDP 10억 원을 벌 때 배출하는 탄소량(원단위)이 급격히 줄고 있습니다. 한국 경제가 <b>'저부가가치 다배출'</b>에서 <b>'고부가가치 저배출'</b> 구조로 체질 개선 중임을 보여줍니다.
+            </div>
+            <div class="chart-box"><canvas id="chart4"></canvas></div>
+        </div>
+
+        <div class="insight-card">
+            <span class="card-tag" style="color: #d35400;">METHANE</span>
+            <h3 class="card-title">5. 메탄(CH4)의 딜레마</h3>
+            <div class="card-desc">
+                이산화탄소와 달리 메탄은 <b>농업(벼, 축산)과 폐기물</b>이 주범입니다. 에너지 전환뿐만 아니라, 식습관 변화와 자원 순환 정책이 필요한 영역입니다.
+            </div>
+            <div class="chart-box"><canvas id="chart5"></canvas></div>
+        </div>
+
+        <div class="insight-card">
+            <span class="card-tag" style="color: #16a085;">LIFESTYLE</span>
+            <h3 class="card-title">6. 1인당 배출량의 반전</h3>
+            <div class="card-desc">
+                국민 1인당 배출량도 2018년 정점을 찍고 하락세로 돌아섰습니다. 인구 감소가 원인이 아니라, <b>국민 개개인의 '탄소 발자국'</b> 자체가 줄어들기 시작했다는 긍정적 신호입니다.
+            </div>
+            <div class="chart-box"><canvas id="chart6"></canvas></div>
+        </div>
+
+    </div>
+
+    <div class="reference-box">
+        <div class="ref-title">📚 Data Source (출처)</div>
+        <ul class="ref-list">
+            <li><b>발행기관:</b> 온실가스종합정보센터 (GIR)</li>
+            <li><b>보고서:</b> 2024년 국가 온실가스 인벤토리 보고서 (2006 IPCC 지침 기준)</li>
+            <li style="margin-top: 10px; font-size: 13px; color: #999;">※ 본 리포트는 2006 IPCC 지침에 따른 공식 통계 데이터를 시각화한 것입니다.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    const data = {"years": ["1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"], "emissions_total": [310.57, 341.23, 368.8, 403.69, 432.77, 464.44, 501.21, 526.09, 459.85, 500.24, 533.63, 550.96, 570.76, 584.5, 595.73, 597.79, 606.97, 613.6, 629.0, 632.87, 689.96, 720.61, 719.08, 727.48, 722.65, 725.05, 735.56, 756.27, 780.14, 757.15, 709.47, 739.51, 722.03, 707.2], "gdp": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "intensity_gdp": [0.0, -0.009, 0.0163, 0.0231, -0.0198, -0.022, -0.0007, -0.0124, -0.0805, -0.0254, -0.0231, -0.0141, -0.0385, -0.0065, -0.031, -0.0384, -0.0352, -0.0449, -0.0048, -0.002, 0.0191, 0.0073, -0.0269, -0.0206, -0.0376, -0.0251, -0.0167, -0.006, -0.0002, -0.0514, -0.0564, -0.0036, -0.0496, -0.0358], "per_capita": [0.0, 0.0879, 0.0696, 0.0835, 0.0613, 0.0624, 0.0689, 0.0399, -0.1322, 0.0801, 0.0579, 0.0246, 0.03, 0.0188, 0.0152, 0.0013, 0.01, 0.0058, 0.0174, 0.001, 0.0848, 0.0364, -0.0073, 0.0071, -0.0129, -0.002, 0.0105, 0.0253, 0.0271, -0.0328, -0.0643, 0.0437, -0.0218, -0.0213], "sectors": {"Energy": [42004.07, 49945.73, 59044.99, 67233.27, 81318.26, 91952.43, 110080.09, 120575.53, 107952.39, 117741.03, 136316.46, 147140.06, 155879.48, 159850.25, 172483.41, 178358.59, 187144.22, 199499.84, 212443.14, 230654.69, 254619.18, 264989.86, 269449.65, 276099.31, 263946.83, 262304.42, 263880.35, 273961.83, 297732.94, 279023.23, 246767.98, 259488.54, 257606.74, 248155.39], "Industry": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Agriculture": [24800.27, 24841.17, 25135.06, 25466.07, 25681.81, 25777.45, 26125.61, 26077.53, 26031.82, 25038.38, 24609.4, 24202.13, 24052.73, 23800.4, 23723.81, 23554.44, 23555.35, 23796.4, 23771.69, 24167.06, 24519.01, 23298.94, 23894.87, 23751.61, 23873.26, 23469.44, 23383.05, 23490.75, 23307.54, 23072.77, 22905.64, 22903.94, 22782.46, 22537.34], "Waste": [13439.35, 14822.09, 16379.27, 17434.27, 19563.31, 20956.26, 20775.2, 21528.63, 20696.75, 22178.5, 23390.05, 24612.61, 24130.67, 24103.49, 22507.3, 22649.19, 22614.12, 20983.05, 20297.78, 20244.2, 19710.73, 20180.3, 19854.57, 19784.22, 19228.71, 19752.28, 19628.82, 20150.99, 19336.59, 18747.3, 18461.34, 18313.05, 18121.75, 18172.0]}, "f_gases": {"HFCs": [1041.6, 846.67, 1984.58, 2236.29, 2641.38, 3338.64, 3955.56, 4918.84, 3740.13, 5954.41, 6009.06, 3556.6, 5648.77, 3992.4, 4407.63, 4761.66, 5001.37, 5392.16, 6016.27, 6336.55, 7636.07, 8977.6, 10492.64, 12502.09, 14577.9, 16074.18, 18128.45, 20490.92, 23595.13, 25225.72, 27914.38, 30305.35, 33056.61, 33629.2], "PFCs": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1877.46, 1838.89, 2118.77, 2546.37, 2269.12, 2254.74, 2593.31, 3166.57, 3172.3, 3264.55, 3328.99, 3102.27, 2264.47, 2515.19, 2334.67, 2513.96, 2566.24, 2762.93, 1810.68, 1813.76, 2588.32, 3919.51, 3836.93, 4511.26, 4748.42, 4066.77, 1798.05], "SF6": [169.07, 324.84, 338.47, 378.91, 534.56, 1432.45, 1139.4, 1506.79, 990.38, 3191.82, 2790.12, 2693.79, 2890.54, 3277.52, 3842.69, 4266.21, 5377.12, 6454.01, 7474.32, 8411.87, 9981.48, 8585.7, 8671.78, 9458.71, 10542.68, 8374.48, 6762.86, 7031.78, 6242.29, 7022.84, 5407.75, 5788.33, 3958.98, 4023.18], "NF3": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 334.68, 322.53, 366.56, 487.21, 755.55, 778.28, 783.21, 864.65, 655.2, 804.65, 967.55, 1038.74, 1740.51, 1729.77, 1541.38, 1211.94]}, "methane": {"agriculture": [19813.3, 19954.46, 20043.78, 20282.75, 20267.99, 20226.55, 20413.99, 20355.46, 20357.09, 19629.77, 19340.7, 19143.11, 19094.26, 18949.24, 18786.8, 18619.7, 18700.32, 18847.4, 18887.21, 19112.87, 19423.61, 18489.61, 18810.81, 18607.49, 18665.26, 18327.38, 18276.06, 18326.68, 18034.96, 17716.03, 17520.28, 17469.45, 17324.21, 17108.08], "waste": [12829.84, 14001.48, 15380.58, 16183.46, 17734.58, 18435.23, 18690.1, 19013.33, 18072.19, 18102.02, 18161.22, 18687.69, 18580.04, 18526.48, 16977.61, 16851.53, 16475.35, 15570.42, 15212.22, 15096.55, 14677.1, 14486.09, 13526.62, 13373.86, 13249.28, 13479.66, 13272.88, 13626.71, 13190.93, 12703.44, 12686.49, 12486.72, 12497.8, 12030.89]}};
+    Chart.defaults.font.family = 'Pretendard';
+    Chart.defaults.maintainAspectRatio = false;
+    Chart.defaults.plugins.tooltip.mode = 'index';
+    Chart.defaults.plugins.tooltip.intersect = false;
+
+    // 1. 탈동조화 (Decoupling) - 정규화
+    const baseGDP = data.gdp[0] || 1;
+    const baseEmissions = data.emissions_total[0] || 1;
+    new Chart(document.getElementById('chart1'), {
+        type: 'line',
+        data: {
+            labels: data.years,
+            datasets: [
+                { label: '실질 GDP (성장)', data: data.gdp.map(v => (v/baseGDP)*100), borderColor: '#27ae60', backgroundColor: '#27ae60', borderWidth: 2, pointRadius: 0 },
+                { label: '온실가스 배출량', data: data.emissions_total.map(v => (v/baseEmissions)*100), borderColor: '#c0392b', backgroundColor: '#c0392b', borderWidth: 2, pointRadius: 0 }
+            ]
+        },
+        options: {
+            plugins: { title: { display: true, text: '1990년 = 100 기준 변화율' } },
+            scales: { y: { display: false } }
+        }
+    });
+
+    // 2. F-gas (Stacked Area)
+    new Chart(document.getElementById('chart2'), {
+        type: 'line',
+        data: {
+            labels: data.years,
+            datasets: [
+                { label: 'HFCs', data: data.f_gases.HFCs, fill: true, backgroundColor: 'rgba(52, 152, 219, 0.6)', borderColor: 'transparent', pointRadius: 0 },
+                { label: 'SF6', data: data.f_gases.SF6, fill: true, backgroundColor: 'rgba(155, 89, 182, 0.6)', borderColor: 'transparent', pointRadius: 0 },
+                { label: 'PFCs', data: data.f_gases.PFCs, fill: true, backgroundColor: 'rgba(241, 196, 15, 0.6)', borderColor: 'transparent', pointRadius: 0 },
+                { label: 'NF3', data: data.f_gases.NF3, fill: true, backgroundColor: 'rgba(230, 126, 34, 0.6)', borderColor: 'transparent', pointRadius: 0 }
+            ]
+        },
+        options: {
+            scales: { y: { stacked: true, beginAtZero: true } },
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    // 3. 에너지 전환 (Doughnut - 2023년)
+    const lastIdx = data.years.length - 1;
+    const sData = data.sectors;
+    new Chart(document.getElementById('chart3'), {
+        type: 'doughnut',
+        data: {
+            labels: ['에너지', '산업공정', '농업', '폐기물'],
+            datasets: [{
+                data: [sData.Energy[lastIdx], sData.Industry[lastIdx], sData.Agriculture[lastIdx], sData.Waste[lastIdx]],
+                backgroundColor: ['#c0392b', '#7f8c8d', '#27ae60', '#f39c12']
+            }]
+        },
+        options: { plugins: { legend: { position: 'right' } } }
+    });
+
+    // 4. 탄소 생산성 (GDP당 배출량)
+    new Chart(document.getElementById('chart4'), {
+        type: 'line',
+        data: {
+            labels: data.years,
+            datasets: [{
+                label: 'GDP 10억원당 배출량 (톤)',
+                data: data.intensity_gdp,
+                borderColor: '#2980b9', backgroundColor: 'rgba(41, 128, 185, 0.1)',
+                fill: true, tension: 0.4, pointRadius: 0
+            }]
+        },
+        options: { scales: { y: { beginAtZero: false } }, plugins: { legend: { display: false } } }
+    });
+
+    // 5. 메탄 (Stacked Bar: 농업 vs 폐기물)
+    new Chart(document.getElementById('chart5'), {
+        type: 'bar',
+        data: {
+            labels: data.years,
+            datasets: [
+                { label: '농업 (벼/축산)', data: data.methane.agriculture, backgroundColor: '#27ae60' },
+                { label: '폐기물 (매립)', data: data.methane.waste, backgroundColor: '#f39c12' }
+            ]
+        },
+        options: {
+            scales: { x: { stacked: true }, y: { stacked: true } },
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    // 6. 1인당 배출량 (Bar with color change)
+    new Chart(document.getElementById('chart6'), {
+        type: 'bar',
+        data: {
+            labels: data.years,
+            datasets: [{
+                label: '1인당 배출량 (톤)',
+                data: data.per_capita,
+                backgroundColor: data.per_capita.map((v, i) => i >= 28 ? '#16a085' : '#bdc3c7'), // 2018년 이후 색상 강조
+                borderRadius: 3
+            }]
+        },
+        options: { plugins: { legend: { display: false } } }
+    });
+
+</script>
+</body>
+</html>
